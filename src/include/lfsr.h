@@ -1,13 +1,11 @@
 /*
     Copyright Matthew Darnell
-    2016
     Summer 2016, CECS 564 University of Louisville
     Content Scrambling System (CSS) Simulator
 */
-#include <stdint.h>
-
-typedef enum { ZERO=0, ONE=1 } BIT;
-typedef int8_t BYTE;
+#ifndef LFSR_H_
+#define LFSR_H_
+#include <bits.h>
 
 struct lfsr {
   int num_bits;
@@ -20,3 +18,4 @@ void setup_lfsr(struct lfsr*, int*, int*);
 void init_with_key(struct lfsr* lf_arr[], int, BYTE*);
 BIT shift_lfsr(struct lfsr*);
 void get_next_byte(struct lfsr*, BIT b[8]);
+#endif

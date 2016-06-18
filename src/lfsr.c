@@ -1,13 +1,10 @@
 /*
     Copyright Matthew Darnell
-    2016
     Summer 2016, CECS 564 University of Louisville
     Content Scrambling System (CSS) Simulator
 */
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <stdint.h>
 #include <lfsr.h>
 
 

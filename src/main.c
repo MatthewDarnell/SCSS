@@ -1,15 +1,15 @@
 /*
     Copyright Matthew Darnell
-    2016
     Summer 2016, CECS 564 University of Louisville
     Content Scrambling System (CSS) Simulator
 */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdint.h>
 
 #include <lfsr.h>
+#include <adder.h>
 
 #define trace fprintf(stderr, "%s - line %d\n", __func__, __LINE__);
 
@@ -50,6 +50,10 @@ int main()
   }
   printf("\n");
 
+  //BIT one = ZERO, two = ZERO, carry_in = ZERO, carry_out = ZERO, sum = ZERO;
+
+  //full_add(one, two, carry_in, &carry_out, &sum);
+  //printf("\n(%d + %d) = %d%d\n", one, two, carry_out, sum);
 
   return 0;
 }

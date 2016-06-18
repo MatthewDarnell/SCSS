@@ -10,6 +10,7 @@
 
 #include <lfsr.h>
 #include <adder.h>
+#include <cipher.h>
 
 #define trace fprintf(stderr, "%s - line %d\n", __func__, __LINE__);
 
@@ -23,6 +24,9 @@ int main()
       taps_2[25] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1 }; //x^25 + x^21 + x^20 + x^10 + 1
   setup_lfsr(&l_17, &num_bits_1, taps_1);
   setup_lfsr(&l_25, &num_bits_2, taps_2);
+
+  //plaintext input value
+  BIT plaintext[8] = { ONE, ZERO, ZERO, ONE, ONE, ZERO, ONE, ONE };
 
   //Some random 40-bit Key
   BYTE key[40] = {
@@ -75,5 +79,27 @@ int main()
     printf("%d", sumArray[i]);
   }
   printf("\n");
+
+  BIT ciphertext[8] = {0,0,0,0,0,0,0,0};
+
+  encrypt(plaintext, sumArray, ciphertext);
+
+  printf("\n\nPlaintext:  ");
+  for(i=0; i<8; i++){
+    printf("%d", plaintext[i]);
+  }
+  printf("\nKeystream:  ");
+  for(i=0; i<8; i++){
+    printf("%d", sumArray[i]);
+  }
+  printf("\nCiphertext: ");
+  for(i=0; i<8; i++){
+    printf("%d", ciphertext[i]);
+  }
+  printf("\n\n");
+
+
+
+
   return 0;
 }

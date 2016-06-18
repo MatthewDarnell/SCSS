@@ -6,7 +6,8 @@ LIBS =
 TARGET = scss
 SRCS =	src/main.c \
         src/lfsr.c \
-		src/adder.c
+		src/adder.c \
+		src/cipher.c
 
 all: $(SRCS)
 	 $(CC) $(CFLAGS) $(DEFS) $(INCLUDES) $(SRCS) $(LIBS) -o $(TARGET)

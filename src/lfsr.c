@@ -70,9 +70,7 @@ void print_lfsr(struct lfsr *l)
 
 BIT shift_lfsr(struct lfsr *l)
 {
-  BIT returned_bit = ZERO;
   int i;
-  returned_bit = l->contents[0] == 0 ? ZERO : ONE;
   BYTE xor[l->num_bits];
   memset(xor, 0, l->num_bits * sizeof(BYTE));
 
@@ -86,8 +84,8 @@ BIT shift_lfsr(struct lfsr *l)
       count_taps++;
     }
   }
-  for(i=1; i< l->num_bits; i++){      //Shift values 1 to the left
-    l->contents[i-1] = l->contents[i];
+  for(i=l->num_bits; i > 0; i--){      //Shift values 1 to the right
+    l->contents[i] = l->contents[i-1];
   }
   //print_lfsr(l);
   int dNewBit = xor[0];
@@ -97,9 +95,10 @@ BIT shift_lfsr(struct lfsr *l)
   }
   BIT new_bit = dNewBit == 1 ? ONE : ZERO;
 
-  l->contents[l->num_bits - 1] = new_bit;
+  l->contents[0] = new_bit;
 
-  return returned_bit;
+  //printf("\n\n");
+  return new_bit;
 }
 
 

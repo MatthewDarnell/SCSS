@@ -35,6 +35,20 @@ int main()
   struct lfsr *init_arr[2] = { &l_17, &l_25 };
   init_with_key(init_arr, 2, key);
 
+  BIT byte_17[8], byte_25[8];
+  get_next_byte(&l_17, byte_17);
+  get_next_byte(&l_25, byte_25);
+
+  printf("\nlfsr-17 next byte: \n");
+  int i;
+  for(i=0; i<8; i++){
+      printf("%d ", byte_17[i]);
+  }
+  printf("\nlfsr-25 next byte: \n");
+  for(i=0; i<8; i++){
+      printf("%d ", byte_25[i]);
+  }
+  printf("\n");
 
 
   return 0;

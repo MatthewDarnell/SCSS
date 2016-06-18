@@ -19,4 +19,4 @@ void print_lfsr(struct lfsr*);
 void setup_lfsr(struct lfsr*, int*, int*);
 void init_with_key(struct lfsr* lf_arr[], int, BYTE*);
 BIT shift_lfsr(struct lfsr*);
-void get_next_byte(struct lfsr*);
+void get_next_byte(struct lfsr*, BIT b[8]);

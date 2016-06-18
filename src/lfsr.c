@@ -102,12 +102,13 @@ BIT shift_lfsr(struct lfsr *l)
 }
 
 
-void get_next_byte(struct lfsr *l)
+void get_next_byte(struct lfsr *l, BIT b[8])
 {
   int i;
   for(i=0; i<8; i++){
-    BIT retVal = shift_lfsr(l);
+    b[i] = shift_lfsr(l);
     //print_lfsr(l);
-    printf("%d", retVal);
+    //printf("%d", b[i]);
   }
+  //printf("\n");
 }

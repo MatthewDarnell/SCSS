@@ -36,11 +36,15 @@ void init_with_key(struct lfsr *lf_arr[], int num_lfsrs, BYTE *b)
   BYTE *temp_key = b;
   for(i=0; i<num_lfsrs; i++){
     struct lfsr *l = lf_arr[i];
-    for(j=0; j<l->num_bits - 1; j++){
-      l->contents[j] = *temp_key;
-      temp_key++;
+    for(j=0; j<l->num_bits; j++){
+      if(j == l->num_bits - 4){
+        l->contents[j] = 1;
+      }
+      else{
+        l->contents[j] = *temp_key;
+        temp_key++;
+      }
     }
-    l->contents[l->num_bits-1] = 1;
   }
 }
 

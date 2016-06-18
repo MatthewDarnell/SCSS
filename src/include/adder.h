@@ -8,4 +8,5 @@
 #include <bits.h>
 void half_add(BIT,BIT,BIT*,BIT*);
 void full_add(BIT,BIT,BIT,BIT*,BIT*);
+void sum_bytes(BIT*,BIT*,BIT,BIT*,BIT*);
 #endif

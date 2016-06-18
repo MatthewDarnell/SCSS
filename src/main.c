@@ -48,12 +48,32 @@ int main()
   for(i=0; i<8; i++){
       printf("%d ", byte_25[i]);
   }
+  printf("\n\n");
+
+
+  BIT arrOne[8] = {ONE, ZERO, ZERO, ONE, ZERO, ZERO, ZERO, ONE};
+  BIT arrTwo[8] = {ZERO, ZERO, ZERO, ZERO, ONE, ZERO, ONE, ONE};
+
+  BIT carry = ZERO;
+  BIT sumArray[8] = {ZERO, ZERO, ZERO, ZERO,ZERO, ZERO, ZERO, ZERO};
+
+  sum_bytes(arrOne, arrTwo, carry, sumArray, &carry);
+
+  printf(" ");
+  for(i=0; i<8; i++){
+    printf("%d", arrOne[i]);
+  }
+  printf("\n+\n ");
+
+  for(i=0; i<8; i++){
+      printf("%d", arrTwo[i]);
+  }
+
+  printf("\n---------\n");
+  printf("%d", carry);
+  for(i=0; i<8; i++){
+    printf("%d", sumArray[i]);
+  }
   printf("\n");
-
-  //BIT one = ZERO, two = ZERO, carry_in = ZERO, carry_out = ZERO, sum = ZERO;
-
-  //full_add(one, two, carry_in, &carry_out, &sum);
-  //printf("\n(%d + %d) = %d%d\n", one, two, carry_out, sum);
-
   return 0;
 }

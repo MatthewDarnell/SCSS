@@ -2,7 +2,7 @@ CC ?= clang
 CFLAGS = -Wall -O3
 DEFS =
 INCLUDES = -Isrc -Isrc/include
-LIBS =
+LIBS = -lm
 TARGET = scss
 SRCS =	src/main.c \
         src/lfsr.c \

@@ -6,5 +6,8 @@
 #ifndef CIPHER_H_
 #define CIPHER_H_
 #include <bits.h>
-void encrypt(BIT*,BIT*,BIT*);
+#include "lfsr.h"
+void xor(BIT*,BIT*,BIT*);
+int encrypt_file(const char *file, struct lfsr *l_17, struct lfsr *l_25, const char *outfile);
+void bit_array_to_unsigned_char(BIT *bits, unsigned char *u8);
 #endif

@@ -3,103 +3,40 @@
     Summer 2016, CECS 564 University of Louisville
     Content Scrambling System (CSS) Simulator
 */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 #include <lfsr.h>
-#include <adder.h>
 #include <cipher.h>
 
-#define trace fprintf(stderr, "%s - line %d\n", __func__, __LINE__);
-
-
-int main()
+int main(int argc, char *argv[])
 {
-  struct lfsr l_17, l_25;
-  int num_bits_1 = 17,
-      num_bits_2 = 25;
-  int taps_1[17] = { 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 }, //x^17 + x^2 + 1
-      taps_2[25] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1 }; //x^25 + x^21 + x^20 + x^10 + 1
-  setup_lfsr(&l_17, &num_bits_1, taps_1);
-  setup_lfsr(&l_25, &num_bits_2, taps_2);
+    if(argc < 3){
+        fprintf(stderr, "Usage:\n./scss </path/to/plaintext> </path/to/output-encrypted>\n./scss </path/to/encrypted> </path/to/output-decrypted>\n");
+        return -1;
+    }
 
-  //plaintext input value
-  BIT plaintext[8] = { ONE, ZERO, ZERO, ONE, ONE, ZERO, ONE, ONE };
+    const char  *inputFile   = argv[1],
+                *outputFile  = argv[2];
 
-  //Some random 40-bit Key
-  BYTE key[40] = {
+    struct lfsr l_17, l_25;
+    int num_bits_1 = 17,
+    num_bits_2 = 25;
+    int taps_1[17] = { 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 }, //x^17 + x^2 + 1
+    taps_2[25] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1 }; //x^25 + x^21 + x^20 + x^10 + 1
+    setup_lfsr(&l_17, &num_bits_1, taps_1);
+    setup_lfsr(&l_25, &num_bits_2, taps_2);
+
+    //Some random 40-bit Key
+    BYTE key[40] = {
     1,0,0,0,0,0,0,1,0,0,
     1,0,0,0,0,1,0,0,0,0,
     1,0,0,0,0,0,0,1,0,0,
     1,0,0,0,0,0,0,1,0,0
-  };
+    };
 
-  struct lfsr *init_arr[2] = { &l_17, &l_25 };
-  init_with_key(init_arr, 2, key);
-
-  BIT byte_17[8], byte_25[8];
-  get_next_byte(&l_17, byte_17);
-  get_next_byte(&l_25, byte_25);
-
-  printf("\nlfsr-17 next byte: \n");
-  int i;
-  for(i=0; i<8; i++){
-      printf("%d ", byte_17[i]);
-  }
-  printf("\nlfsr-25 next byte: \n");
-  for(i=0; i<8; i++){
-      printf("%d ", byte_25[i]);
-  }
-  printf("\n\n");
-
-
-  BIT arrOne[8] = {ONE, ZERO, ZERO, ONE, ZERO, ZERO, ZERO, ONE};
-  BIT arrTwo[8] = {ZERO, ZERO, ZERO, ZERO, ONE, ZERO, ONE, ONE};
-
-  BIT carry = ZERO;
-  BIT sumArray[8] = {ZERO, ZERO, ZERO, ZERO,ZERO, ZERO, ZERO, ZERO};
-
-  sum_bytes(arrOne, arrTwo, carry, sumArray, &carry);
-
-  printf(" ");
-  for(i=0; i<8; i++){
-    printf("%d", arrOne[i]);
-  }
-  printf("\n+\n ");
-
-  for(i=0; i<8; i++){
-      printf("%d", arrTwo[i]);
-  }
-
-  printf("\n---------\n");
-  printf("%d", carry);
-  for(i=0; i<8; i++){
-    printf("%d", sumArray[i]);
-  }
-  printf("\n");
-
-  BIT ciphertext[8] = {0,0,0,0,0,0,0,0};
-
-  encrypt(plaintext, sumArray, ciphertext);
-
-  printf("\n\nPlaintext:  ");
-  for(i=0; i<8; i++){
-    printf("%d", plaintext[i]);
-  }
-  printf("\nKeystream:  ");
-  for(i=0; i<8; i++){
-    printf("%d", sumArray[i]);
-  }
-  printf("\nCiphertext: ");
-  for(i=0; i<8; i++){
-    printf("%d", ciphertext[i]);
-  }
-  printf("\n\n");
-
-
-
-
-  return 0;
+    struct lfsr *init_arr[2] = { &l_17, &l_25 };
+    init_with_key(init_arr, 2, key);
+    encrypt_file(inputFile, &l_17, &l_25, outputFile);
+    return 0;
 }

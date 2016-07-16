@@ -11,14 +11,40 @@
 
 int main(int argc, char *argv[])
 {
-    if(argc < 3){
-        fprintf(stderr, "Usage:\n./scss </path/to/plaintext> </path/to/output-encrypted>\n./scss </path/to/encrypted> </path/to/output-decrypted>\n");
+    if(argc < 5){
+        fprintf(stderr, "Usage:\n./scss </path/to/plaintext> </path/to/output-encrypted> <encrypt/decrypt> <mode>\n./scss </path/to/encrypted> </path/to/output-decrypted> <encrypt/decrypt> <mode>\nValid Modes: [ecb, cbc, ofb, cfb]\n");
         return -1;
     }
 
     const char  *inputFile   = argv[1],
-                *outputFile  = argv[2];
+                *outputFile  = argv[2],
+                *operation   = argv[3],
+                *mode        = argv[4];
 
+    if(strcmp(operation, "encrypt") != 0 && strcmp(operation, "decrypt") != 0) {
+      fprintf(stderr, "Invalid Operation. Valid Modes: [encrypt, decrypt]\n");
+      return -2;
+    }
+
+    int dOperation = 0;
+    if(strcmp(operation, "decrypt") == 0)
+      dOperation = 1;
+
+    if(strcmp(mode, "ecb") != 0 && strcmp(mode, "cbc") != 0 && strcmp(mode, "ofb") != 0 && strcmp(mode, "cfb") != 0) {
+      fprintf(stderr, "Invalid Mode. Valid Modes: [ecb, cbc, ofb, cfb]\n");
+      return -3;
+    }
+
+    int dMode = 0; //default ecb
+    if(strcmp(mode, "cbc") == 0){
+      dMode = 1;
+    }
+    else if(strcmp(mode, "ofb") == 0){
+      dMode = 2;
+    }
+    else if(strcmp(mode, "cfb") == 0){
+      dMode = 3;
+    }
     struct lfsr l_17, l_25;
     int num_bits_1 = 17,
     num_bits_2 = 25;
@@ -35,8 +61,18 @@ int main(int argc, char *argv[])
     1,0,0,0,0,0,0,1,0,0
     };
 
+
+    //some i.v.
+    unsigned char initialization_vector = 0xa2;
+
+
     struct lfsr *init_arr[2] = { &l_17, &l_25 };
     init_with_key(init_arr, 2, key);
-    encrypt_file(inputFile, &l_17, &l_25, outputFile);
+
+    if(dOperation == 0)
+      encrypt_file(inputFile, &l_17, &l_25, outputFile, &dMode, initialization_vector);
+    else
+      decrypt_file(inputFile, &l_17, &l_25, outputFile, &dMode, initialization_vector);
+
     return 0;
 }
